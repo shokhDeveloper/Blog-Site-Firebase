@@ -1,9 +1,12 @@
 import React from "react";
-
-export const Error:React.FC = ():JSX.Element => {
+import { genericsType } from "../../Settings";
+interface ErrorInterface {
+    errorText: genericsType<string>
+}
+export const Error:React.FC<ErrorInterface> = ({errorText}):JSX.Element => {
     return(
         <div className="error__title-box text-center">
-            <h3 className="error__title text-danger">Postlar mavjud emas</h3>
+            <h3 className="error__title text-danger">{errorText}</h3>
         </div>
     )
 }

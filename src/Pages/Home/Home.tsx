@@ -6,7 +6,7 @@ import { Error, PlaceholderCard, Post } from "../../Components";
 
 export const Home: React.FC = (): JSX.Element => {
     const { token, posts } = useSelector((state: { Reducer: InitialStateInterface }) => state.Reducer)
-    const { postsActive, setPostsActive, postsError, setPostsError }: myContext = useContext(Context)
+    const { postsActive, setPostsActive, postsError, setPostsError, setErrorText, errorText }: myContext = useContext(Context)
     const [postsArray, setPostsArray] = useState<genericsType<number[]>>(null)
     const postsCollectionRef = collection(db, "posts")
     const dispatch = useDispatch()
@@ -27,7 +27,9 @@ export const Home: React.FC = (): JSX.Element => {
                 setPostsError(true)
             }
         } else {
-            return Promise.reject("TOKEN ERROR")
+            setPostsError(true)
+            setErrorText("Token mavjud emas")
+            
         }
     }, [token])
     useEffect(() => {
@@ -62,9 +64,11 @@ export const Home: React.FC = (): JSX.Element => {
                         )}
                     </ul>
                 ) : ( 
-                    postsError ? (
-                        <Error/>
-                    ): (
+                    postsError && !token ? (
+                        <Error errorText={errorText}/>
+                    ):postsError && token ? (
+                        <Error errorText={"Postlar mavjud emas"}/>
+                    ):(
                         (function(){
                             let arrayPost:number[] = Array.from({ length: 3 }, (_, index: number) => index + 1)
                             if(!postsArray?.length && !postsError){
