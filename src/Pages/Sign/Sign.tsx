@@ -20,18 +20,18 @@ export const Sign: React.FC = (): JSX.Element => {
             if (response?.user) {
                 dispatch(setUser(user))
                 dispatch(setToken(v4()))
-                window.location.reload()
+
                 navigate("/");
             }
         })
     }
     const handleSignOut = async () => {
         await signOut(auth).then(() => {
+            navigate("/")
             dispatch(setUser(null))
             dispatch(setToken(null))
             window.localStorage.clear()
             window.location.reload()
-            navigate("/")
         })
     }
     return (
